@@ -60,7 +60,16 @@ Useful flags (`probe.py --help` lists all): `--prompt` overrides the task instru
 
 ## PolaRiS (blocked under WSL2)
 
-The `polaris_*.sh`, `build_splat.sh`, `install_cuda.sh` and `serve_droid.sh` scripts set up PolaRiS with the π0.5-DROID checkpoint. The policy server runs, but Isaac Sim's RTX renderer won't start under WSL2 (no NVIDIA Vulkan driver), and PolaRiS draws the robot with RTX, so evaluation hangs at the first render. It needs native Linux or native Windows Isaac Sim.
+The `polaris_*.sh`, `build_splat.sh`, `install_cuda.sh` and `serve_droid.sh` scripts set up PolaRiS with the π0.5-DROID checkpoint. The policy server runs, but Isaac Sim's RTX renderer won't start under WSL2 (no NVIDIA Vulkan driver), so stock evaluation hangs at the first camera render.
+
+What does work under WSL2:
+- **Splat rendering:** PolaRiS draws the background *and the robot* with Gaussian splats (`PolaRiS-Hub/nvidia_droid/SEGMENTED/*.ply`, one per link). RTX only renders the mesh-only movable objects and their mask.
+- **Physics:** Isaac Lab physics runs headless with the camera sensors removed and `device="cpu"`, `use_fabric=False`, at about 11 ms/step (`physics_only_test.py`). GPU PhysX fails under WSL2, and the cuda device path deadlocks after that.
+
+To finish a WSL-only PolaRiS:
+1. Compute camera poses directly instead of using Isaac camera sensors.
+2. Convert the mesh-only objects into splats.
+3. Subclass the environment to skip the RTX composite.
 
 ## Credits
 

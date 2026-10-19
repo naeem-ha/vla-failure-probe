@@ -2,3 +2,10 @@ __pycache__/
 *.pyc
 .venv/
 *.part
+
+# local working notes and debug helpers
+polaris_wsl/CONTEXT.md
+stack.sh
+show_env.sh
+diag.sh
+show_ext.sh
