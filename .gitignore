@@ -9,3 +9,6 @@ stack.sh
 show_env.sh
 diag.sh
 show_ext.sh
+
+# submission drafts stay local until submitted
+submission/
